@@ -1,40 +1,60 @@
 import axios from "axios";
 
-// const BASE_URL = `${process.env.REACT_APP_BASE_URL}`;
-const BASE_URL = "https://62718a9e25fed8fcb5e7c0e4.mockapi.io/api/";
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
+export const tokenKey = {
+  set(token) {
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  },
+  unset() {
+    axios.defaults.headers.common.Authorization = "";
+  },
+};
+
+// Authorization
+
+export const signUpUser = async body => {
+  const { data } = await axios.post("users/signup", body);
+  tokenKey.set(data.token);
+  return data;
+};
+
+export const logInUser = async body => {
+  const { data } = await axios.post("users/login", body);
+  tokenKey.set(data.token);
+  return data;
+};
+
+export const logOutUser = async () => {
+  const { data } = await axios.post("/users/logout");
+  tokenKey.unset();
+  return data;
+};
+
+export const refreshCurrenthUser = async persistedToken => {
+  if (!persistedToken) {
+    throw Error("user");
+  }
+  tokenKey.set(persistedToken);
+  try {
+    const { data } = await axios.get("/users/current");
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+// Contacts
 
 export const getDataContacts = async () => {
-  const response = await axios({
-    method: "get",
-    baseURL: `${BASE_URL}`,
-    url: "contacts",
-    timeout: 5000,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await response.data;
+  const { data } = await axios.get("/contacts");
   return data;
 };
 
-export const getAddContacts = async contact => {
-  const response = await axios({
-    method: "post",
-    baseURL: `${BASE_URL}`,
-    url: "contacts",
-    data: contact,
-  });
-  const data = await response.data;
+export const getAddContacts = async newContact => {
+  const { data } = await axios.post("/contacts", newContact);
   return data;
 };
-
 export const deleteContact = async contactId => {
-  const idRemoteContact = await axios({
-    method: "delete",
-    baseURL: `${BASE_URL}`,
-    url: `contacts/${contactId}`,
-  });
-  const data = await idRemoteContact.data.id;
-  return data;
+  await axios.delete(`/contacts/${contactId}`);
 };

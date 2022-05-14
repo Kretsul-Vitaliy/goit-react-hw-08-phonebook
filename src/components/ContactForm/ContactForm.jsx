@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from "react-redux";
 import { Notify } from "notiflix";
@@ -8,7 +8,7 @@ import { contactsOperations } from "../../redux/contacts";
 function ContactForm() {
   const dispatch = useDispatch();
   const contacts = useSelector(state => state.phonebook.items.contacts);
-  const contactStatus = useSelector(state => state.phonebook.items.status);
+  // const contactStatus = useSelector(state => state.phonebook.items.status);
   const [form, setForm] = useState({
     name: "",
     number: "",
@@ -47,11 +47,11 @@ function ContactForm() {
     resetForm();
   };
 
-  useEffect(() => {
-    if (contactStatus === "idle") {
-      dispatch(contactsOperations.getContacts());
-    }
-  }, [contactStatus, dispatch]);
+  // useEffect(() => {
+  //   if (contactStatus === "idle") {
+  //     dispatch(contactsOperations.getContacts());
+  //   }
+  // }, [contactStatus, dispatch]);
 
   return (
     <Form onSubmit={handleFormSubmit}>
@@ -64,7 +64,7 @@ function ContactForm() {
           value={name}
           onChange={handleChangeForm}
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer..."
           required
         />
       </FormLabel>

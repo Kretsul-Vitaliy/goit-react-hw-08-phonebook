@@ -1,21 +1,64 @@
+import { Navigate, Route, Routes } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import lightTheme from "../theme/themeStyle";
 import GlobalStyle from "../theme/GlobalStyle.styled";
-import ContactForm from "../components/ContactForm";
-import Section from "../components/Section";
-import ContactList from "../components/ContactList";
-import Filter from "../components/Filter";
+import PhoneBookPage from "../pages/PhoneBookPage";
+import RegisterPage from "../pages/RegisterPage";
+import LoginPage from "../pages/LoginPage";
+import HomePage from "../pages/HomePage";
+import PublicRoute from "../components/PublicRoute/PublicRoute";
+import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
+import { refresh } from "../redux/user/userOperations";
 
 function App() {
+  const themeStyle = lightTheme;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(refresh());
+  }, [dispatch]);
   return (
     <>
       <GlobalStyle />
-      <Section title="Phonebook">
-        <ContactForm />
-      </Section>
-      <Section title="Contacts">
-        <h3>Find contacts by name</h3>
-        <Filter />
-        <ContactList />
-      </Section>
+      <ThemeProvider theme={themeStyle}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PublicRoute>
+                <HomePage />
+              </PublicRoute>
+            }
+          >
+            <Route
+              path="contacts"
+              element={
+                <PrivateRoute redirectTo="/login">
+                  <PhoneBookPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="register"
+              element={
+                <PublicRoute restricted redirectTo="/contacts">
+                  <RegisterPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="login"
+              element={
+                <PublicRoute restricted redirectTo="/contacts">
+                  <LoginPage />
+                </PublicRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </Route>
+        </Routes>
+      </ThemeProvider>
     </>
   );
 }

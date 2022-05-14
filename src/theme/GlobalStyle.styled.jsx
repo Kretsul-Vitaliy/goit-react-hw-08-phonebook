@@ -28,6 +28,9 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     list-style: none;
   }
+    a {
+    text-decoration: none;
+  }
   h1,
   h2,
   h3,
@@ -39,3 +42,15 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 export default GlobalStyle;
+// *,
+// *::after,
+// *::before {
+//     box-sizing: border-box;
+//     margin: 0;
+// }
+// body {
+//     background: ${({ theme }) => theme.bg};
+//     color: ${({ theme }) => theme.text};
+//     font-family: 'Roboto', monospace;
+//     letter-spacing: .6px;
+// }
