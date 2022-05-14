@@ -13,7 +13,7 @@ function ContactListItem({ name, number, id }) {
       <ButtonDelete
         onClick={() =>
           dispatch(
-            contactsOperations.deleteContacts(id),
+            contactsOperations.deleteContacts({ id }),
             Notify.success("Contact is delete"),
           )
             .unwrap()

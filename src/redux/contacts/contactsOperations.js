@@ -19,10 +19,23 @@ export const createContacts = createAsyncThunk(
     return contactCreate;
   },
 );
+// export const deleteContacts = createAsyncThunk(
+//   "contacts/deleteContacts",
+//   async contactId => {
+//     const contactDelete = await deleteContact(contactId);
+//     return contactDelete;
+//   },
+// );
+
 export const deleteContacts = createAsyncThunk(
-  "contacts/deleteContacts",
-  async contactId => {
-    const contactDelete = await deleteContact(contactId);
-    return contactDelete;
+  "contacts/removeContact",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      await deleteContact(id);
+
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   },
 );
