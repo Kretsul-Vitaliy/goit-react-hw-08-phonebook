@@ -49,7 +49,7 @@ export const refresh = createAsyncThunk(
   "user/refresh",
   async (_, { getState, rejectWithValue }) => {
     const state = getState();
-    const persistedToken = state.user.user.token;
+    const persistedToken = state.user.token;
 
     if (!persistedToken) {
       return rejectWithValue();

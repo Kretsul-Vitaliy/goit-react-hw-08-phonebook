@@ -11,14 +11,15 @@ import {
   REGISTER,
 } from "reduxjs-toolkit-persist";
 import storage from "reduxjs-toolkit-persist/lib/storage";
-// import contactsReducer from "./contacts/contactsSlice";
+import autoMergeLevel1 from "reduxjs-toolkit-persist/lib/stateReconciler/autoMergeLevel1";
 import contactsSlice from "./contacts/contactsSlice";
 import userSlice from "./user/userSlice";
 
 const persistConfig = {
-  key: "token",
+  key: "tokenUser",
   storage,
   whitelist: ["token"],
+  stateReconciler: autoMergeLevel1,
 };
 const persistedReducer = persistReducer(persistConfig, userSlice.reducer);
 

@@ -1,5 +1,6 @@
 import { createSlice, combineReducers } from "@reduxjs/toolkit";
 import { contactsOperations } from ".";
+import { logOut } from "../user/userOperations";
 
 const contactsItemsSlice = createSlice({
   name: "items",
@@ -59,6 +60,11 @@ const contactsItemsSlice = createSlice({
         ...state,
         status: "failed",
         error: action.error.message,
+      }))
+      .addCase(logOut.fulfilled, state => ({
+        ...state,
+        status: "idle",
+        contacts: [],
       }));
   },
 });
